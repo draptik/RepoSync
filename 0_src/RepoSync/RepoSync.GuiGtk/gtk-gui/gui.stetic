@@ -17,4 +17,32 @@
       <placeholder />
     </child>
   </widget>
+  <widget class="Gtk.Bin" id="RepoSync.GuiGtk.Widgets.ChooseConfigWidget" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="RepoSync.GuiGtk.Widgets.RepoTreeViewWidget" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="RepoSync.GuiGtk.Widgets.SyncActionWidget" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="RepoSync.GuiGtk.Widgets.SyncOutputWidget" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
 </stetic-interface>

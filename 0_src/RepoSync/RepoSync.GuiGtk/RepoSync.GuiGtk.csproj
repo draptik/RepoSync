@@ -51,6 +51,14 @@
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="gtk-gui\RepoSync.GuiGtk.MainWindow.cs" />
+    <Compile Include="Widgets\ChooseConfigWidget.cs" />
+    <Compile Include="gtk-gui\RepoSync.GuiGtk.Widgets.ChooseConfigWidget.cs" />
+    <Compile Include="Widgets\RepoTreeViewWidget.cs" />
+    <Compile Include="gtk-gui\RepoSync.GuiGtk.Widgets.RepoTreeViewWidget.cs" />
+    <Compile Include="Widgets\SyncActionWidget.cs" />
+    <Compile Include="gtk-gui\RepoSync.GuiGtk.Widgets.SyncActionWidget.cs" />
+    <Compile Include="Widgets\SyncOutputWidget.cs" />
+    <Compile Include="gtk-gui\RepoSync.GuiGtk.Widgets.SyncOutputWidget.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -65,4 +73,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <Folder Include="Widgets\" />
+  </ItemGroup>
 </Project>
