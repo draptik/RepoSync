@@ -1,0 +1,2 @@
+* Project description
+  Simple application to synchronize different Git repositories.
