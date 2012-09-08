@@ -1,16 +1,21 @@
 using System;
 using Gtk;
 
-public partial class MainWindow: Gtk.Window
-{	
-	public MainWindow (): base (Gtk.WindowType.Toplevel)
-	{
-		Build ();
-	}
+namespace RepoSync.GuiGtk
+{
+	public partial class MainWindow: Gtk.Window
+	{	
+		public MainWindow (): base (Gtk.WindowType.Toplevel)
+		{
+			Build (); // calls code behind page...
+		}
 	
-	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
-	{
-		Application.Quit ();
-		a.RetVal = true;
+		protected void OnDeleteEvent (object sender, DeleteEventArgs a)
+		{
+			Application.Quit ();
+			a.RetVal = true;
+		}
 	}
+
 }
+
