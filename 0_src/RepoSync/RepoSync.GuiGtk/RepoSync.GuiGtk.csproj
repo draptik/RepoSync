@@ -59,6 +59,7 @@
     <Compile Include="gtk-gui\RepoSync.GuiGtk.Widgets.SyncActionWidget.cs" />
     <Compile Include="Widgets\SyncOutputWidget.cs" />
     <Compile Include="gtk-gui\RepoSync.GuiGtk.Widgets.SyncOutputWidget.cs" />
+    <Compile Include="MainController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
