@@ -24,6 +24,13 @@ namespace RepoSync.GuiGtk
 
 			// Register events
 			chooseConfigWidget.OnSyncConfigChangedStarted += HandleOnSyncConfigChangedStarted;
+
+			syncAction.PullStarted += HandleBtnPullStarted;
+		}
+
+		void HandleBtnPullStarted ()
+		{
+			// todo...
 		}
 
 		private void HandleOnSyncConfigChangedStarted (SyncConfig syncConfig)
