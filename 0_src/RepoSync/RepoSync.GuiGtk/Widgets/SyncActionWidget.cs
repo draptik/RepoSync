@@ -1,6 +1,6 @@
 using System;
 
-namespace RepoSync.GuiGtk.Widgets
+namespace RepoSync.GuiGtk
 {
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class SyncActionWidget : Gtk.Bin

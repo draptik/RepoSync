@@ -1,5 +1,6 @@
 using System;
-using RepoSync.GuiGtk.Widgets;
+//using RepoSync.GuiGtk.Widgets;
+using RepoSync.Service.Config;
 
 namespace RepoSync.GuiGtk
 {
@@ -22,7 +23,12 @@ namespace RepoSync.GuiGtk
 			this.syncOutputWidget = syncOutput;
 
 			// Register events
+			chooseConfigWidget.OnSyncConfigChangedStarted += HandleOnSyncConfigChangedStarted;
+		}
 
+		private void HandleOnSyncConfigChangedStarted (SyncConfig syncConfig)
+		{
+			repoTreeViewWidget.Update(syncConfig);
 		}
 	}
 }

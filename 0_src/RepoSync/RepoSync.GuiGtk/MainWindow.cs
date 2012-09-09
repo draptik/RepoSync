@@ -1,12 +1,20 @@
 using System;
 using Gtk;
-using RepoSync.GuiGtk.Widgets;
+//using RepoSync.GuiGtk.Widgets;
 
 namespace RepoSync.GuiGtk
 {
 	public partial class MainWindow: Gtk.Window
 	{	
 		private string guiTitle = "RepoSync";
+
+		private ChooseConfigWidget chooseConfigWidget;
+		private RepoTreeViewWidget repoTreeViewWidget;
+		private SyncActionWidget syncActionWidget;
+		private SyncOutputWidget syncOutputWidget;
+
+
+		private readonly MainController mainController;
 
 		private VBox vBoxMain;
 		private VBox vBoxContent;
@@ -16,6 +24,12 @@ namespace RepoSync.GuiGtk
 			Build (); // calls code behind page...
 
 			InitMainWindow();
+
+			mainController= new MainController(
+				chooseConfigWidget, 
+				repoTreeViewWidget, 
+				syncActionWidget, 
+				syncOutputWidget);
 
 			ShowAll();
 		}
@@ -45,10 +59,15 @@ namespace RepoSync.GuiGtk
 		{
 			vBoxContent = new VBox();
 
-			vBoxContent.Add (new ChooseConfigWidget());
-			vBoxContent.Add (new RepoTreeViewWidget());
-			vBoxContent.Add (new SyncActionWidget());
-			vBoxContent.Add (new SyncOutputWidget());
+			chooseConfigWidget = new ChooseConfigWidget();
+			repoTreeViewWidget = new RepoTreeViewWidget();
+			syncActionWidget = new SyncActionWidget();
+			syncOutputWidget= new SyncOutputWidget();
+
+			vBoxContent.Add (chooseConfigWidget);
+			vBoxContent.Add (repoTreeViewWidget);
+			vBoxContent.Add (syncActionWidget);
+			vBoxContent.Add (syncOutputWidget);
 			// TODO: Add more content here
 		}
 

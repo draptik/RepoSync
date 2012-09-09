@@ -52,14 +52,14 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="gtk-gui\RepoSync.GuiGtk.MainWindow.cs" />
     <Compile Include="Widgets\ChooseConfigWidget.cs" />
-    <Compile Include="gtk-gui\RepoSync.GuiGtk.Widgets.ChooseConfigWidget.cs" />
     <Compile Include="Widgets\RepoTreeViewWidget.cs" />
-    <Compile Include="gtk-gui\RepoSync.GuiGtk.Widgets.RepoTreeViewWidget.cs" />
     <Compile Include="Widgets\SyncActionWidget.cs" />
-    <Compile Include="gtk-gui\RepoSync.GuiGtk.Widgets.SyncActionWidget.cs" />
     <Compile Include="Widgets\SyncOutputWidget.cs" />
-    <Compile Include="gtk-gui\RepoSync.GuiGtk.Widgets.SyncOutputWidget.cs" />
     <Compile Include="MainController.cs" />
+    <Compile Include="gtk-gui\RepoSync.GuiGtk.ChooseConfigWidget.cs" />
+    <Compile Include="gtk-gui\RepoSync.GuiGtk.RepoTreeViewWidget.cs" />
+    <Compile Include="gtk-gui\RepoSync.GuiGtk.SyncActionWidget.cs" />
+    <Compile Include="gtk-gui\RepoSync.GuiGtk.SyncOutputWidget.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -76,5 +76,11 @@
   </ProjectExtensions>
   <ItemGroup>
     <Folder Include="Widgets\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RepoSync.Service\RepoSync.Service.csproj">
+      <Project>{AC2B0DDF-269D-4E3A-A39B-B9580C5A9EE2}</Project>
+      <Name>RepoSync.Service</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
