@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AC2B0DDF-269D-4E3A-A39B-B9580C5A9EE2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>RepoSync.Service</RootNamespace>
+    <AssemblyName>RepoSync.Service</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Libraries\Json.NET\Json.NET_4.5r8\Bin\Net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="IoService.cs" />
+    <Compile Include="JsonService.cs" />
+    <Compile Include="Config\Entry.cs" />
+    <Compile Include="Config\SyncConfig.cs" />
+    <Compile Include="GitService.cs" />
+    <Compile Include="Dto\ICommandRequest.cs" />
+    <Compile Include="Dto\ICommandResponse.cs" />
+    <Compile Include="Exception\CommandException.cs" />
+    <Compile Include="Exception\GitCommandException.cs" />
+    <Compile Include="Dto\GitRequest.cs" />
+    <Compile Include="Dto\CommandRequest.cs" />
+    <Compile Include="CommandService.cs" />
+    <Compile Include="CommandStrategy\ICommandOutputStrategy.cs" />
+    <Compile Include="CommandStrategy\DefaultCommandOutputStrategy.cs" />
+    <Compile Include="Dto\CommandResponse.cs" />
+    <Compile Include="CommandStrategy\GitCommandOutputStrategy.cs" />
+    <Compile Include="PathFinder.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Config\" />
+    <Folder Include="Dto\" />
+    <Folder Include="Exception\" />
+    <Folder Include="CommandStrategy\" />
+  </ItemGroup>
+</Project>

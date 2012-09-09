@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D5F7174D-4210-44C4-9273-F5DE4D3DC0D5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>RepoSync.Service.Tests</RootNamespace>
+    <AssemblyName>RepoSync.Service.Tests</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="NSubstitute">
+      <HintPath>..\Libraries\NSubstitute\NSubstitute-1.4.3.0\lib\NET40\NSubstitute.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="JsonTests.cs" />
+    <Compile Include="IoServiceTests.cs" />
+    <Compile Include="GitTests.cs" />
+    <Compile Include="CommandServiceTests.cs" />
+    <Compile Include="MainIntegrationTests.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\RepoSync.Service\RepoSync.Service.csproj">
+      <Project>{AC2B0DDF-269D-4E3A-A39B-B9580C5A9EE2}</Project>
+      <Name>RepoSync.Service</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="create_scripts\" />
+    <Folder Include="testdata\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="create_scripts\_create_git_repos.sh" />
+    <None Include="testdata\config_test.json" />
+    <None Include="testdata\testfile.txt" />
+  </ItemGroup>
+</Project>
