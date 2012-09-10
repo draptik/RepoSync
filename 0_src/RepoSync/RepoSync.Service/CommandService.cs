@@ -24,7 +24,7 @@ namespace RepoSync.Service
 			var result = new CommandResponse();
 
 			if (!this.ioService.DirectoryIsValid(commandRequest.WorkingDirectory)) {
-				result.Msg = "Directory not found.";
+				result.Msg = "Directory not found: " + commandRequest.WorkingDirectory;
 				result.Success = false;
 				return result;
 			}
