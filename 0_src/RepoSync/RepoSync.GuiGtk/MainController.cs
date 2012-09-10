@@ -7,10 +7,10 @@ namespace RepoSync.GuiGtk
 	public class MainController
 	{
 		private SyncConfig syncConfig;
-		private ChooseConfigWidget chooseConfigWidget;
-		private RepoTreeViewWidget repoTreeViewWidget;
-		private SyncActionWidget syncActionWidget;
-		private SyncOutputWidget syncOutputWidget;
+		private readonly ChooseConfigWidget chooseConfigWidget;
+		private readonly RepoTreeViewWidget repoTreeViewWidget;
+		private readonly SyncActionWidget syncActionWidget;
+		private readonly SyncOutputWidget syncOutputWidget;
 
 		public MainController (
 			ChooseConfigWidget chooseConfig,
@@ -25,7 +25,7 @@ namespace RepoSync.GuiGtk
 
 			// Register events
 			chooseConfigWidget.OnSyncConfigChangedStarted += HandleOnSyncConfigChangedStarted;
-			syncAction.PullStarted += HandleBtnPullStarted;
+			syncActionWidget.PullStarted += HandleBtnPullStarted;
 		}
 
 		private void HandleBtnPullStarted ()
