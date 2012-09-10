@@ -1,11 +1,14 @@
 using System;
+
 //using RepoSync.GuiGtk.Widgets;
 using RepoSync.Service.Config;
+using RepoSync.Service;
 
 namespace RepoSync.GuiGtk
 {
 	public class MainController
 	{
+		private SyncConfig syncConfig;
 		private ChooseConfigWidget chooseConfigWidget;
 		private RepoTreeViewWidget repoTreeViewWidget;
 		private SyncActionWidget syncActionWidget;
@@ -31,11 +34,21 @@ namespace RepoSync.GuiGtk
 		void HandleBtnPullStarted ()
 		{
 			// todo...
+			if (this.syncConfig != null) {
+
+				var gitService = new GitService ();
+				foreach (var entry in syncConfig.Entries) {
+					var response = gitService.Pull (entry);
+					syncOutputWidget.Content(response.Msg);
+				}
+
+			}
 		}
 
 		private void HandleOnSyncConfigChangedStarted (SyncConfig syncConfig)
 		{
-			repoTreeViewWidget.Update(syncConfig);
+			this.syncConfig = syncConfig;
+			repoTreeViewWidget.Update (syncConfig);
 		}
 	}
 }

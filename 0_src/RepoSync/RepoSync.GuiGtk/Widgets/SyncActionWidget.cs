@@ -8,8 +8,6 @@ namespace RepoSync.GuiGtk
 
 		public event Action PullStarted;
 
-
-
 		public SyncActionWidget ()
 		{
 			this.Build ();

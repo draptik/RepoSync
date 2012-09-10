@@ -5,6 +5,8 @@ namespace RepoSync.GuiGtk
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class SyncOutputWidget : Gtk.Bin
 	{
+		private Gtk.TextView textView;
+
 		public SyncOutputWidget ()
 		{
 			this.Build ();
@@ -14,10 +16,15 @@ namespace RepoSync.GuiGtk
 			this.ShowAll ();
 		}
 
+		public void Content (string content)
+		{
+			textView.Buffer.Text = content;
+		}
+
 		private void Init ()
 		{
 		
-			var textView = new Gtk.TextView();
+			textView = new Gtk.TextView();
 
 			this.Add (textView);
 		}
