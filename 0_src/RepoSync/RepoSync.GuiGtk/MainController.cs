@@ -1,6 +1,4 @@
 using System;
-
-//using RepoSync.GuiGtk.Widgets;
 using RepoSync.Service.Config;
 using RepoSync.Service;
 
@@ -27,13 +25,11 @@ namespace RepoSync.GuiGtk
 
 			// Register events
 			chooseConfigWidget.OnSyncConfigChangedStarted += HandleOnSyncConfigChangedStarted;
-
 			syncAction.PullStarted += HandleBtnPullStarted;
 		}
 
-		void HandleBtnPullStarted ()
+		private void HandleBtnPullStarted ()
 		{
-			// todo...
 			if (this.syncConfig != null) {
 
 				var gitService = new GitService ();
@@ -41,7 +37,6 @@ namespace RepoSync.GuiGtk
 					var response = gitService.Pull (entry);
 					syncOutputWidget.Content(response.Msg);
 				}
-
 			}
 		}
 
