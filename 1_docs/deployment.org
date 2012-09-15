@@ -1,0 +1,10 @@
+* Deployment from MonoDevelop
+** Using Install
+   * Right click Gtk project
+   * Tools > Install
+   * Choose prefix directory
+   * Choose Application name
+   * Done
+   * Result project is in prefix directory/Application name/bin/
+   * Desktop starter is in prefix directory/Application name/share/applications/*.desktop
+
