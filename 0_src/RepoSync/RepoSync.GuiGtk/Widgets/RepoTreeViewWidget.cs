@@ -30,7 +30,11 @@ namespace RepoSync.GuiGtk
 
 			tv.Model = listStore;
 
-			this.Add (tv);
+
+			var vbox = new VBox();
+			vbox.PackStart(tv, true, true, 0);
+
+			this.Add (vbox);
 		}
 
 		private void InitColumns ()

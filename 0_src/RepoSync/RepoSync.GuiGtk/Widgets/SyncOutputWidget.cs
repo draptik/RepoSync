@@ -1,4 +1,5 @@
 using System;
+using Gtk;
 
 namespace RepoSync.GuiGtk
 {
@@ -26,7 +27,9 @@ namespace RepoSync.GuiGtk
 		
 			textView = new Gtk.TextView();
 
-			this.Add (textView);
+			var vbox = new VBox();
+			vbox.PackStart(textView, true, true, 0);
+			this.Add (vbox);
 		}
 
 	}

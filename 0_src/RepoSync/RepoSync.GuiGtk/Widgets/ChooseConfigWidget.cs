@@ -1,4 +1,5 @@
 using System;
+using Gtk;
 using RepoSync.Service;
 using RepoSync.Service.Config;
 
@@ -27,12 +28,14 @@ namespace RepoSync.GuiGtk
 
 		private void Init ()
 		{
-			this.btnFileChooser = new Gtk.FileChooserButton (
+			btnFileChooser = new Gtk.FileChooserButton (
 				"Please choose a file!", Gtk.FileChooserAction.Open);
 
 			btnFileChooser.SelectionChanged += HandleSelectionChanged;
 
-			this.Add (btnFileChooser);
+			var vbox = new VBox();
+			vbox.PackStart(btnFileChooser, true, true, 0);
+			this.Add (vbox);
 		}
 
 		private void HandleSelectionChanged (object sender, EventArgs e)

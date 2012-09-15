@@ -1,4 +1,5 @@
 using System;
+using Gtk;
 
 namespace RepoSync.GuiGtk
 {
@@ -6,7 +7,7 @@ namespace RepoSync.GuiGtk
 	public partial class SyncActionWidget : Gtk.Bin
 	{
 
-		public event Action PullStarted;
+		public event System.Action PullStarted;
 
 		public SyncActionWidget ()
 		{
@@ -26,11 +27,14 @@ namespace RepoSync.GuiGtk
 			btnPull.Label = "Pull";
 			btnPull.Clicked += PullClickedStarted;
 
-			hbox.Add (btnPull);
+			//hbox.Add (btnPull);
+			hbox.PackStart(btnPull, true, true, 0);
 
 			// TODO: Add more buttons here...
 
+
 			this.Add (hbox);
+
 		}
 
 		private void PullClickedStarted (object sender, EventArgs e)
