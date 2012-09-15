@@ -65,6 +65,7 @@
   <ItemGroup>
     <Content Include="app.desktop">
       <DeployService-TargetDirectoryId>Linux.DesktopApplications</DeployService-TargetDirectoryId>
+      <DeployService-Deploy>true</DeployService-Deploy>
     </Content>
   </ItemGroup>
   <ProjectExtensions>
