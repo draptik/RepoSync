@@ -7,6 +7,11 @@ namespace RepoSync.Service.Tests
 	[TestFixture()]
 	public class MainIntegrationTests
 	{
+		private enum InitialGitStatus {
+			HomeAheadOfBare,
+			BareAheadOfHome
+		}
+
 		private const string scriptDirPath = "../../";
 		private const string scriptDirName = "create_scripts/";
 		private const string createRepoScript = "_create_git_repos.sh";
@@ -44,7 +49,7 @@ namespace RepoSync.Service.Tests
 		[Test()]
 		public void Setup_Create_GitRepos ()
 		{
-			var result = SetupGitRepos ();
+			var result = SetupGitRepos (InitialGitStatus.BareAheadOfHome);
 
 			Assert.IsTrue (result.Success);
 
@@ -59,7 +64,7 @@ namespace RepoSync.Service.Tests
 		[Test()]
 		public void Pull ()
 		{
-			var result = SetupGitRepos ();
+			var result = SetupGitRepos (InitialGitStatus.BareAheadOfHome);
 
 			Assert.IsTrue (result.Success);
 
@@ -73,12 +78,43 @@ namespace RepoSync.Service.Tests
 				var response = gitService.Pull (entry);
 				Assert.IsTrue (response.Success);
 			}
+		}
+
+		[Test()]
+		public void Push ()
+		{
+			var result = SetupGitRepos (InitialGitStatus.HomeAheadOfBare);
+
+			Assert.IsTrue (result.Success);
+
+			var service = new JsonService (new IoService ());
+			service.Init (@"../../testdata/config_test.json");
+
+			var config = service.SyncConfig;
+
+			var gitService = new GitService ();
+			foreach (var entry in config.Entries) {
+				var response = gitService.Push (entry);
+				Assert.IsTrue (response.Success);
+			}
 
 		}
 
-		private ICommandResponse SetupGitRepos ()
+		private ICommandResponse SetupGitRepos (InitialGitStatus status)
 		{
-			var script = scriptDirName + createRepoScript;
+			var argument = string.Empty;
+			switch (status) {
+			case InitialGitStatus.BareAheadOfHome:
+				argument = " bare";
+				break;
+			case InitialGitStatus.HomeAheadOfBare:
+				argument = " home";
+				break;
+			default:
+				break;
+			}
+
+			var script = scriptDirName + createRepoScript + argument;
 			ICommandRequest request = new CommandRequest ();
 			request.WorkingDirectory = scriptDirPath;
 			request.Name = "bash";

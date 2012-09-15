@@ -114,8 +114,8 @@ if [ "$scenario" = "home" ]; then
     # edit..
 	echo "something new" >> "$homeRepo/readme.txt"
 
-    # commit & push to bare repo
+    # commit
 	cd "$homeRepo"
 	$GIT commit -a -m"updated readme from home repo"
-	$GIT push origin master
+	#$GIT push origin master
 fi

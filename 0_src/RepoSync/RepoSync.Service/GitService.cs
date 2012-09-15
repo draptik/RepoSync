@@ -25,6 +25,16 @@ namespace RepoSync.Service
 
 			return new CommandService(new GitCommandOutputStrategy()).Execute(gitRequest);
 		}
+
+		public ICommandResponse Push (Entry entry)
+		{
+			ICommandRequest gitRequest = new GitRequest {
+				Arguments = "push ",
+				WorkingDirectory = entry.Source
+			};
+			return new CommandService(new GitCommandOutputStrategy()).Execute(gitRequest);
+		}
+
 	}
 }
 
