@@ -22,9 +22,7 @@ namespace RepoSync.GuiGtk
 			this.ShowAll ();
 		}
 
-		public SyncConfig SyncConfig {
-			get { return this.syncConfig; }
-		}
+		public SyncConfig SyncConfig { get { return this.syncConfig; } }
 
 		private void Init ()
 		{
