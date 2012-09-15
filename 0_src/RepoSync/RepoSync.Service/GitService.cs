@@ -5,36 +5,31 @@ namespace RepoSync.Service
 {
 	public class GitService
 	{
+		private readonly IGitStrategy gitStrategy;
+
+		public GitService () : this(new NGitStrategy())
+		{
+		}
+
+		public GitService (IGitStrategy gitStrategy)
+		{
+			this.gitStrategy = gitStrategy;
+		}
+
 		public bool IsGitDir (string path)
 		{
-			ICommandRequest commandRequest = new GitRequest {
-				Arguments = "log", // "ls-files"
-				WorkingDirectory = path
-			};
-
-			var response = new CommandService(new GitCommandOutputStrategy()).Execute(commandRequest);
-			return response.Success;
+			return gitStrategy.IsGitDir(path);
 		}
 
 		public ICommandResponse Pull (Entry entry)
 		{
-			ICommandRequest gitRequest = new GitRequest {
-				Arguments = "pull " + entry.Source,
-				WorkingDirectory = entry.Destination
-			};
-
-			return new CommandService(new GitCommandOutputStrategy()).Execute(gitRequest);
+			return gitStrategy.Pull(entry.Source, entry.Destination);
 		}
 
 		public ICommandResponse Push (Entry entry)
 		{
-			ICommandRequest gitRequest = new GitRequest {
-				Arguments = "push ",
-				WorkingDirectory = entry.Source
-			};
-			return new CommandService(new GitCommandOutputStrategy()).Execute(gitRequest);
+			return gitStrategy.Push(entry.Source);
 		}
-
 	}
 }
 

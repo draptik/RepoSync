@@ -2,7 +2,7 @@ using System;
 
 namespace RepoSync.Service
 {
-	public class GitCommandOutputStrategy : ICommandOutputStrategy
+	public class BashGitCommandOutputStrategy : ICommandOutputStrategy
 	{
 		public void Execute (System.Diagnostics.Process proc, ICommandResponse response)
 		{

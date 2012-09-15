@@ -33,6 +33,24 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Libraries\Json.NET\Json.NET_4.5r8\Bin\Net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NGit">
+      <HintPath>..\Libraries\NGit\NGit_trunk\NGit.dll</HintPath>
+    </Reference>
+    <Reference Include="NGit.Test">
+      <HintPath>..\Libraries\NGit\NGit_trunk\NGit.Test.dll</HintPath>
+    </Reference>
+    <Reference Include="NSch">
+      <HintPath>..\Libraries\NGit\NGit_trunk\NSch.dll</HintPath>
+    </Reference>
+    <Reference Include="Sharpen">
+      <HintPath>..\Libraries\NGit\NGit_trunk\Sharpen.dll</HintPath>
+    </Reference>
+    <Reference Include="Sharpen.Test">
+      <HintPath>..\Libraries\NGit\NGit_trunk\Sharpen.Test.dll</HintPath>
+    </Reference>
+    <Reference Include="Sharpen.Unix">
+      <HintPath>..\Libraries\NGit\NGit_trunk\Sharpen.Unix.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -51,8 +69,13 @@
     <Compile Include="CommandStrategy\ICommandOutputStrategy.cs" />
     <Compile Include="CommandStrategy\DefaultCommandOutputStrategy.cs" />
     <Compile Include="Dto\CommandResponse.cs" />
-    <Compile Include="CommandStrategy\GitCommandOutputStrategy.cs" />
     <Compile Include="PathFinder.cs" />
+    <Compile Include="GitStrategy\IGitStrategy.cs" />
+    <Compile Include="GitStrategy\NGitStrategy.cs" />
+    <Compile Include="GitStrategy\BashGitStrategy.cs" />
+    <Compile Include="CommandStrategy\BashGitCommandOutputStrategy.cs" />
+    <Compile Include="Dto\NGitPullResultAdapter.cs" />
+    <Compile Include="Dto\NGitPushResultAdapter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -60,5 +83,6 @@
     <Folder Include="Dto\" />
     <Folder Include="Exception\" />
     <Folder Include="CommandStrategy\" />
+    <Folder Include="GitStrategy\" />
   </ItemGroup>
 </Project>

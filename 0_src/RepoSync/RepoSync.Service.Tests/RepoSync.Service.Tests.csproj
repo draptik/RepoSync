@@ -36,6 +36,24 @@
     <Reference Include="NSubstitute">
       <HintPath>..\Libraries\NSubstitute\NSubstitute-1.4.3.0\lib\NET40\NSubstitute.dll</HintPath>
     </Reference>
+    <Reference Include="NGit">
+      <HintPath>..\Libraries\NGit\NGit_trunk\NGit.dll</HintPath>
+    </Reference>
+    <Reference Include="NGit.Test">
+      <HintPath>..\Libraries\NGit\NGit_trunk\NGit.Test.dll</HintPath>
+    </Reference>
+    <Reference Include="NSch">
+      <HintPath>..\Libraries\NGit\NGit_trunk\NSch.dll</HintPath>
+    </Reference>
+    <Reference Include="Sharpen">
+      <HintPath>..\Libraries\NGit\NGit_trunk\Sharpen.dll</HintPath>
+    </Reference>
+    <Reference Include="Sharpen.Test">
+      <HintPath>..\Libraries\NGit\NGit_trunk\Sharpen.Test.dll</HintPath>
+    </Reference>
+    <Reference Include="Sharpen.Unix">
+      <HintPath>..\Libraries\NGit\NGit_trunk\Sharpen.Unix.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
@@ -44,6 +62,7 @@
     <Compile Include="GitTests.cs" />
     <Compile Include="CommandServiceTests.cs" />
     <Compile Include="MainIntegrationTests.cs" />
+    <Compile Include="TestHelpers.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

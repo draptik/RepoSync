@@ -2,21 +2,19 @@ using System;
 using NUnit.Framework;
 using System.IO;
 
+using NGit;
+using NGit.Api;
+using NGit.Storage.File;
+using NGit.Transport;
+using NGit.Errors;
+using NGit.Api.Errors;
+
+
 namespace RepoSync.Service.Tests
 {
 	[TestFixture()]
 	public class MainIntegrationTests
 	{
-		private enum InitialGitStatus {
-			HomeAheadOfBare,
-			BareAheadOfHome
-		}
-
-		private const string scriptDirPath = "../../";
-		private const string scriptDirName = "create_scripts/";
-		private const string createRepoScript = "_create_git_repos.sh";
-		private const string createdBaseName = "Z_deleteme_git_repos";
-
 		private string sandbox;
 
 		[SetUp]
@@ -32,14 +30,14 @@ namespace RepoSync.Service.Tests
 		[Test()]
 		public void CreateScriptDir_Should_Exist ()
 		{
-			var actual = new DirectoryInfo (scriptDirPath + scriptDirName);
+			var actual = new DirectoryInfo (TestHelpers.scriptDirPath + TestHelpers.scriptDirName);
 			Assert.IsTrue (actual.Exists);
 		}
 
 		[Test()]
 		public void CreateScript_Should_ExistAndBeNotReadOnly ()
 		{
-			var script = scriptDirPath + scriptDirName + createRepoScript;
+			var script = TestHelpers.scriptDirPath + TestHelpers.scriptDirName + TestHelpers.createRepoScript;
 
 			var actual = new FileInfo (script);
 			Assert.IsTrue (actual.Exists);
@@ -49,22 +47,22 @@ namespace RepoSync.Service.Tests
 		[Test()]
 		public void Setup_Create_GitRepos ()
 		{
-			var result = SetupGitRepos (InitialGitStatus.BareAheadOfHome);
+			var result = TestHelpers.SetupGitRepos (TestHelpers.InitialGitStatus.BareAheadOfHome);
 
 			Assert.IsTrue (result.Success);
 
 			var sandboxDir = new DirectoryInfo (sandbox);
 
-			DirectoryInfo[] actual = sandboxDir.GetDirectories (createdBaseName + "*", SearchOption.TopDirectoryOnly);
+			DirectoryInfo[] actual = sandboxDir.GetDirectories (TestHelpers.createdBaseName + "*", SearchOption.TopDirectoryOnly);
 
 			Assert.IsNotNull (actual);
 			Assert.IsTrue (actual.Length >= 1); // '>=1' instead of '==1' for tests around midnight...
 		}
 
 		[Test()]
-		public void Pull ()
+		public void Pull_With_ValidGitDirs_ShouldNot_ThrowException ()
 		{
-			var result = SetupGitRepos (InitialGitStatus.BareAheadOfHome);
+			var result = TestHelpers.SetupGitRepos (TestHelpers.InitialGitStatus.BareAheadOfHome);
 
 			Assert.IsTrue (result.Success);
 
@@ -75,15 +73,14 @@ namespace RepoSync.Service.Tests
 
 			var gitService = new GitService ();
 			foreach (var entry in config.Entries) {
-				var response = gitService.Pull (entry);
-				Assert.IsTrue (response.Success);
+				Assert.DoesNotThrow(() => gitService.Pull (entry));
 			}
 		}
 
-		[Test()]
-		public void Push ()
+		[Test]
+		public void Push_WithInvalid_GitDirs_Should_ThrowException ()
 		{
-			var result = SetupGitRepos (InitialGitStatus.HomeAheadOfBare);
+			var result = TestHelpers.SetupGitRepos (TestHelpers.InitialGitStatus.BareAheadOfHome);
 
 			Assert.IsTrue (result.Success);
 
@@ -93,35 +90,12 @@ namespace RepoSync.Service.Tests
 			var config = service.SyncConfig;
 
 			var gitService = new GitService ();
-			foreach (var entry in config.Entries) {
-				var response = gitService.Push (entry);
-				Assert.IsTrue (response.Success);
-			}
 
-		}
-
-		private ICommandResponse SetupGitRepos (InitialGitStatus status)
-		{
-			var argument = string.Empty;
-			switch (status) {
-			case InitialGitStatus.BareAheadOfHome:
-				argument = " bare";
-				break;
-			case InitialGitStatus.HomeAheadOfBare:
-				argument = " home";
-				break;
-			default:
-				break;
-			}
-
-			var script = scriptDirName + createRepoScript + argument;
-			ICommandRequest request = new CommandRequest ();
-			request.WorkingDirectory = scriptDirPath;
-			request.Name = "bash";
-			request.Arguments = script;
-			var service = new CommandService (new GitCommandOutputStrategy ());
-			var result = service.Execute (request);
-			return result;
+			var configEntry = config.Entries[0];
+			configEntry.Source = configEntry.Source + "_invalid";
+			configEntry.Destination = configEntry.Destination;
+			var ex = Assert.Throws<JGitInternalException>(() => gitService.Push (config.Entries[0]));
+			Assert.That (ex.InnerException is NoRemoteRepositoryException);
 		}
 	}
 }
