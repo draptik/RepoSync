@@ -7,7 +7,7 @@ namespace RepoSync.GuiGtk
 	public partial class SyncActionWidget : Gtk.Bin
 	{
 
-		public event System.Action PullStarted;
+		public event System.Action DefaultGitActionForAllStarted;
 
 		public SyncActionWidget ()
 		{
@@ -23,12 +23,11 @@ namespace RepoSync.GuiGtk
 			var hbox = new Gtk.HBox();
 
 			// Pull button
-			var btnPull = new Gtk.Button();
-			btnPull.Label = "Pull";
-			btnPull.Clicked += PullClickedStarted;
+			var btnDoDefaultGitActionForAll = new Gtk.Button();
+			btnDoDefaultGitActionForAll.Label = "Execute default git action for all repos";
+			btnDoDefaultGitActionForAll.Clicked += DefaultGitActionForAllClickedStarted;
 
-			//hbox.Add (btnPull);
-			hbox.PackStart(btnPull, true, true, 0);
+			hbox.PackStart(btnDoDefaultGitActionForAll, true, true, 0);
 
 			// TODO: Add more buttons here...
 
@@ -37,9 +36,9 @@ namespace RepoSync.GuiGtk
 
 		}
 
-		private void PullClickedStarted (object sender, EventArgs e)
+		private void DefaultGitActionForAllClickedStarted (object sender, EventArgs e)
 		{
-			var handler = this.PullStarted;
+			var handler = this.DefaultGitActionForAllStarted;
 			if (handler != null) {
 				handler();
 			}

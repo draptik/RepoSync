@@ -25,16 +25,26 @@ namespace RepoSync.GuiGtk
 
 			// Register events
 			chooseConfigWidget.OnSyncConfigChangedStarted += HandleOnSyncConfigChangedStarted;
-			syncActionWidget.PullStarted += HandleBtnPullStarted;
+			syncActionWidget.DefaultGitActionForAllStarted += HandleBtnDefaultGitActionForAllStarted;
 		}
 
-		private void HandleBtnPullStarted ()
+		private void HandleBtnDefaultGitActionForAllStarted ()
 		{
 			if (this.syncConfig != null) {
 
 				var gitService = new GitService ();
 				foreach (var entry in syncConfig.Entries) {
-					var response = gitService.Pull (entry);
+
+					ICommandResponse response = null;
+					switch (entry.DefaultGitAction) {
+					case DefaultGitAction.Pull:
+						response = gitService.Pull (entry);
+						break;
+					case DefaultGitAction.Push:
+						response = gitService.Push (entry);
+						break;
+					}
+
 					syncOutputWidget.Content(response.Msg);
 				}
 			}

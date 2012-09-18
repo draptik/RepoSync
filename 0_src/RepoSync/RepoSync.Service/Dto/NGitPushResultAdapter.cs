@@ -1,9 +1,9 @@
 using System;
+using NGit;
 using NGit.Api;
 using NGit.Storage.File;
 using NGit.Transport;
 using Sharpen;
-using NGit;
 
 namespace RepoSync.Service
 {

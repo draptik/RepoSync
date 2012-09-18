@@ -26,6 +26,20 @@ namespace RepoSync.Service.Tests
 			sandbox = sandboxDir.FullName;
 		}
 
+		[Test()]
+		public void Setup_Create_GitRepos ()
+		{
+			var result = TestHelpers.SetupGitRepos (TestHelpers.InitialGitStatus.HomeAheadOfBare);
+
+			Assert.IsTrue (result.Success);
+
+			var sandboxDir = new DirectoryInfo (sandbox);
+
+			DirectoryInfo[] actual = sandboxDir.GetDirectories (TestHelpers.createdBaseName + "*", SearchOption.TopDirectoryOnly);
+
+			Assert.IsNotNull (actual);
+			Assert.IsTrue (actual.Length >= 1);
+		}
 
 		[Test()]
 		public void CreateScriptDir_Should_Exist ()
@@ -42,21 +56,6 @@ namespace RepoSync.Service.Tests
 			var actual = new FileInfo (script);
 			Assert.IsTrue (actual.Exists);
 			Assert.IsFalse (actual.IsReadOnly);
-		}
-
-		[Test()]
-		public void Setup_Create_GitRepos ()
-		{
-			var result = TestHelpers.SetupGitRepos (TestHelpers.InitialGitStatus.BareAheadOfHome);
-
-			Assert.IsTrue (result.Success);
-
-			var sandboxDir = new DirectoryInfo (sandbox);
-
-			DirectoryInfo[] actual = sandboxDir.GetDirectories (TestHelpers.createdBaseName + "*", SearchOption.TopDirectoryOnly);
-
-			Assert.IsNotNull (actual);
-			Assert.IsTrue (actual.Length >= 1); // '>=1' instead of '==1' for tests around midnight...
 		}
 
 		[Test()]
