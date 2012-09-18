@@ -19,6 +19,10 @@ namespace RepoSync.Service.Config
 			set;
 		}
 
+		public virtual DefaultGitAction DefaultGitAction {
+			get;
+			set;
+		}
 	}
 }
 

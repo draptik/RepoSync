@@ -1,9 +1,12 @@
 {
 	"name": "config_test.json",
-	"entries": [
+	"entries": 
+	[
 		{
 			"name": "project1",
 			"destination": "/home/patrick/tmp/Z_deleteme_git_repos/project1.git",
-			"source": "/home/patrick/tmp/Z_deleteme_git_repos/project1"
-		}	]
+			"source": "/home/patrick/tmp/Z_deleteme_git_repos/project1",
+			"defaultGitAction": "push"
+		}	
+	]
 }

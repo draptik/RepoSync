@@ -76,6 +76,7 @@
     <Compile Include="CommandStrategy\BashGitCommandOutputStrategy.cs" />
     <Compile Include="Dto\NGitPullResultAdapter.cs" />
     <Compile Include="Dto\NGitPushResultAdapter.cs" />
+    <Compile Include="Config\DefaultGitAction.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

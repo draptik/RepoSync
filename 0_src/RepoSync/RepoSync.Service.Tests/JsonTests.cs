@@ -14,6 +14,7 @@ namespace RepoSync.Service.Tests
 			service.Init(fileName);
 			Assert.IsNotNull(service.SyncConfig);
 			Assert.AreEqual("config_test.json", service.SyncConfig.Name);
+			Assert.AreEqual(DefaultGitAction.Push, service.SyncConfig.Entries[0].DefaultGitAction);
 		}
 	}
 }

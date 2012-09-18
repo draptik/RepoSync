@@ -82,9 +82,8 @@ namespace RepoSync.GuiGtk
 				return;
 			}
 
-			var p = "pull";
 			foreach (var entry in syncConfig.Entries) {
-				listStore.AppendValues (entry.Name, entry.Source, entry.Destination, p);
+				listStore.AppendValues (entry.Name, entry.Source, entry.Destination, entry.DefaultGitAction.ToString());
 			}
 		}
 
