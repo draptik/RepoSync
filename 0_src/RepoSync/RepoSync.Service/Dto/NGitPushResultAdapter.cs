@@ -22,20 +22,9 @@ namespace RepoSync.Service
 			}
 		}
 
-		public string Msg {
-			get;
-			set;
-		}
-
-		public bool Success {
-			get;
-			set;
-		}
-
-		public GitCommandException Exception {
-			get;
-			set;
-		}
+		public string Msg {	get; set; }
+		public bool Success { get; set; }
+		public GitCommandException Exception { get; set; }
 	}
 
 }
