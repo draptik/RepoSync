@@ -15,8 +15,6 @@ namespace RepoSync.Service
 				var remoteUpdates = pushResult.GetRemoteUpdates ();
 				foreach (var remoteUpdate in remoteUpdates) {
 
-					// TODO Add ISSUCCESFULL etc
-					// TODO Add NGitCommandOutputStrategy
 					Msg += remoteUpdate.GetStatus ();
 				}
 			}
