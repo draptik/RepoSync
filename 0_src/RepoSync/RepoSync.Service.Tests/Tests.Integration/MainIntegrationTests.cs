@@ -13,7 +13,7 @@ using NGit.Api.Errors;
 namespace RepoSync.Service.Tests
 {
 	[TestFixture()]
-	public class MainIntegrationTests
+	public class MainIntegrationTests : BaseTest
 	{
 		private string sandbox;
 
@@ -29,13 +29,13 @@ namespace RepoSync.Service.Tests
 		[Test()]
 		public void Setup_Create_GitRepos ()
 		{
-			var result = TestHelpers.SetupGitRepos (TestHelpers.InitialGitStatus.HomeAheadOfBare);
+			var result = SetupGitRepos (InitialGitStatus.HomeAheadOfBare);
 
 			Assert.IsTrue (result.Success);
 
 			var sandboxDir = new DirectoryInfo (sandbox);
 
-			DirectoryInfo[] actual = sandboxDir.GetDirectories (TestHelpers.createdBaseName + "*", SearchOption.TopDirectoryOnly);
+			DirectoryInfo[] actual = sandboxDir.GetDirectories (createdBaseName + "*", SearchOption.TopDirectoryOnly);
 
 			Assert.IsNotNull (actual);
 			Assert.IsTrue (actual.Length >= 1);
@@ -44,14 +44,14 @@ namespace RepoSync.Service.Tests
 		[Test()]
 		public void CreateScriptDir_Should_Exist ()
 		{
-			var actual = new DirectoryInfo (TestHelpers.scriptDirPath + TestHelpers.scriptDirName);
+			var actual = new DirectoryInfo (scriptDirPath + scriptDirName);
 			Assert.IsTrue (actual.Exists);
 		}
 
 		[Test()]
 		public void CreateScript_Should_ExistAndBeNotReadOnly ()
 		{
-			var script = TestHelpers.scriptDirPath + TestHelpers.scriptDirName + TestHelpers.createRepoScript;
+			var script = scriptDirPath + scriptDirName + createRepoScript;
 
 			var actual = new FileInfo (script);
 			Assert.IsTrue (actual.Exists);
@@ -61,39 +61,32 @@ namespace RepoSync.Service.Tests
 		[Test()]
 		public void Pull_With_ValidGitDirs_ShouldNot_ThrowException ()
 		{
-			var result = TestHelpers.SetupGitRepos (TestHelpers.InitialGitStatus.BareAheadOfHome);
-
+			var result = SetupGitRepos (InitialGitStatus.BareAheadOfHome);
 			Assert.IsTrue (result.Success);
 
-			var service = new JsonService (new IoService ());
-			service.Init (@"../../testdata/config_test.json");
-
+			var service = base.InitJsonService();
 			var config = service.SyncConfig;
 
 			var gitService = new GitService ();
 			foreach (var entry in config.Entries) {
 				Assert.DoesNotThrow(() => gitService.Pull (entry));
+				Assert.DoesNotThrow(() => gitService.Push (entry));
 			}
 		}
 
 		[Test]
 		public void Push_WithInvalid_GitDirs_Should_ThrowException ()
 		{
-			var result = TestHelpers.SetupGitRepos (TestHelpers.InitialGitStatus.BareAheadOfHome);
+			var result = SetupGitRepos (InitialGitStatus.BareAheadOfHome);
 
 			Assert.IsTrue (result.Success);
 
-			var service = new JsonService (new IoService ());
-			service.Init (@"../../testdata/config_test.json");
-
-			var config = service.SyncConfig;
-
-			var gitService = new GitService ();
-
-			var configEntry = config.Entries[0];
+			var configEntry = MakeConfigEntry();
 			configEntry.Source = configEntry.Source + "_invalid";
 			configEntry.Destination = configEntry.Destination;
-			var ex = Assert.Throws<JGitInternalException>(() => gitService.Push (config.Entries[0]));
+
+			var gitService = new GitService ();
+			var ex = Assert.Throws<JGitInternalException>(() => gitService.Push (configEntry));
 			Assert.That (ex.InnerException is NoRemoteRepositoryException);
 		}
 	}

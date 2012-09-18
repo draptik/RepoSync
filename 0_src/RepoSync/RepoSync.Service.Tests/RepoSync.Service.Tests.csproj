@@ -57,12 +57,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="JsonTests.cs" />
-    <Compile Include="IoServiceTests.cs" />
-    <Compile Include="GitTests.cs" />
-    <Compile Include="CommandServiceTests.cs" />
-    <Compile Include="MainIntegrationTests.cs" />
-    <Compile Include="TestHelpers.cs" />
+    <Compile Include="Tests.Unit\CommandServiceTests.cs" />
+    <Compile Include="Tests.Unit\GitTests.cs" />
+    <Compile Include="Tests.Unit\IoServiceTests.cs" />
+    <Compile Include="Tests.Unit\JsonTests.cs" />
+    <Compile Include="Tests.Integration\MainIntegrationTests.cs" />
+    <Compile Include="BaseTest.cs" />
+    <Compile Include="Tests.Utilities\InitialGitStatus.cs" />
+    <Compile Include="Tests.Utilities\TestHelpers.cs" />
+    <Compile Include="Tests.Utilities\TestConstants.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -74,6 +77,10 @@
   <ItemGroup>
     <Folder Include="create_scripts\" />
     <Folder Include="testdata\" />
+    <Folder Include="Tests.Unit\" />
+    <Folder Include="Tests.Integration\" />
+    <Folder Include="Tests.ApiExploration\" />
+    <Folder Include="Tests.Utilities\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="create_scripts\_create_git_repos.sh" />

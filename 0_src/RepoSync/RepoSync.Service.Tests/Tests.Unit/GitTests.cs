@@ -13,16 +13,13 @@ using NGit.Storage.File;
 namespace RepoSync.Service.Tests
 {
 	[TestFixture()]
-	public class GitTests
+	public class GitTests : BaseTest
 	{
 		[Test]
 		public void IsGitDir_With_Invalid_GitDir_Should_Return_False ()
 		{
-			TestHelpers.SetupGitRepos (TestHelpers.InitialGitStatus.BareAheadOfHome);
-			var service = new JsonService (new IoService ());
-			service.Init (@"../../testdata/config_test.json");
-			var config = service.SyncConfig;
-			var configEntry = config.Entries[0];
+			SetupGitRepos (InitialGitStatus.BareAheadOfHome);
+			var configEntry = MakeConfigEntry ();
 			configEntry.Source = configEntry.Source + "_invalid";
 			var gitService = new GitService ();
 			Assert.IsFalse(gitService.IsGitDir(configEntry.Source));
@@ -31,12 +28,8 @@ namespace RepoSync.Service.Tests
 		[Test]
 		public void IsGitDir_With_Valid_GitDir_Should_Return_True ()
 		{
-			TestHelpers.SetupGitRepos (TestHelpers.InitialGitStatus.BareAheadOfHome);
-			var service = new JsonService (new IoService ());
-			service.Init (@"../../testdata/config_test.json");
-			var config = service.SyncConfig;
-			var configEntry = config.Entries[0];
-			configEntry.Source = configEntry.Source;
+			SetupGitRepos (InitialGitStatus.BareAheadOfHome);
+			var configEntry = MakeConfigEntry ();
 			var gitService = new GitService ();
 			Assert.IsTrue(gitService.IsGitDir(configEntry.Source));
 		}
@@ -44,12 +37,8 @@ namespace RepoSync.Service.Tests
 		[Test]
 		public void API_Exploring_Getting_MoreInfos_From_NGitPullResponse()
 		{
-			TestHelpers.SetupGitRepos (TestHelpers.InitialGitStatus.BareAheadOfHome);
-			var service = new JsonService (new IoService ());
-			service.Init (@"../../testdata/config_test.json");
-			var config = service.SyncConfig;
-			var configEntry = config.Entries[0];
-			configEntry.Source = configEntry.Source;
+			SetupGitRepos (InitialGitStatus.BareAheadOfHome);
+			var configEntry = MakeConfigEntry ();
 			var gitService = new GitService ();
 
 			// Method under test:
@@ -82,11 +71,8 @@ namespace RepoSync.Service.Tests
 		[Test]
 		public void API_Exploring_OutputParsing()
 		{
-			TestHelpers.SetupGitRepos (TestHelpers.InitialGitStatus.BareAheadOfHome);
-			var service = new JsonService (new IoService ());
-			service.Init (@"../../testdata/config_test.json");
-			var config = service.SyncConfig;
-			var configEntry = config.Entries[0];
+			SetupGitRepos (InitialGitStatus.BareAheadOfHome);
+			var configEntry = MakeConfigEntry ();
 
 			string output = GitOutput(configEntry);
 //			Assert.AreEqual("foo" , output);
@@ -105,12 +91,6 @@ namespace RepoSync.Service.Tests
 			pullCommand.SetProgressMonitor(textMonitor);
 			var pullResponse = pullCommand.Call();
 			return stringWriter.ToString() + " \n\n.........\n\n " + pullResponse.ToString();
-
-		}
-
-		private string ToGitDirString(string s)
-		{
-			return s.EndsWith(".git") ? s : s + "/.git";
 		}
 	}
 }
