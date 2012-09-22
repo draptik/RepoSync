@@ -24,11 +24,13 @@ namespace RepoSync.GuiGtk
 
 		private void Init ()
 		{
-		
 			textView = new Gtk.TextView();
 
+			var scrolledWindow = new Gtk.ScrolledWindow(null, null);
+			scrolledWindow.Add (textView);
+
 			var vbox = new VBox();
-			vbox.PackStart(textView, true, true, 0);
+			vbox.PackStart(scrolledWindow, true, true, 0);
 			this.Add (vbox);
 		}
 

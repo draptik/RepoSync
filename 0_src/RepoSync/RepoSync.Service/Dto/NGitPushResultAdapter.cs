@@ -16,26 +16,26 @@ namespace RepoSync.Service
 			try {
 				foreach (var pushResult in pushResults) {
 
-					Msg += "PushResult......";
+					Msg += newLine + "PushResult......";
 
 					var remoteUpdates = pushResult.GetRemoteUpdates ();
 					foreach (var remoteUpdate in remoteUpdates) {
 
 						var oldObjectId = remoteUpdate.GetTrackingRefUpdate ().GetOldObjectId ().Name;
 						var newObjectId = remoteUpdate.GetTrackingRefUpdate ().GetNewObjectId ().Name;
-						Msg += "Old object id: " + oldObjectId;
-						Msg += "New object id: " + newObjectId;
+						Msg += newLine + "Old object id: " + oldObjectId;
+						Msg += newLine + "New object id: " + newObjectId;
 
 						var refResult = remoteUpdate.GetTrackingRefUpdate ().GetResult ();
-						Msg += "refResult: " + refResult;
+						Msg += newLine + "refResult: " + refResult;
 
 						var status = remoteUpdate.GetStatus ();
-						Msg += "STATUS: " + status;
+						Msg += newLine + "STATUS: " + status;
 
 						UpdateSuccessStatus (status);
 
 						if (remoteUpdate.GetMessage () != null) {
-							Msg += remoteUpdate.GetMessage ();
+							Msg += newLine + remoteUpdate.GetMessage ();
 						}
 
 					}
@@ -45,15 +45,9 @@ namespace RepoSync.Service
 			}
 		}
 
-		private string msg;
-		public string Msg 
-		{ 
-			get { return msg; } 
-			set { msg = !string.IsNullOrEmpty (value) ? newLine + value : string.Empty; } 
-		}
 
+		public string Msg { get; set; }
 		public bool Success { get; set; }
-
 		public GitCommandException Exception { get; set; }
 
 		private void UpdateSuccessStatus (RemoteRefUpdate.Status status)
