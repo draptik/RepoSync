@@ -59,16 +59,17 @@ namespace RepoSync.GuiGtk
 		{
 			vBoxContent = new VBox();
 
+			var menubarWidget = new MenuBarWidget();
 			chooseConfigWidget = new ChooseConfigWidget();
 			repoTreeViewWidget = new RepoTreeViewWidget();
 			syncActionWidget = new SyncActionWidget();
 			syncOutputWidget= new SyncOutputWidget();
 
+			vBoxContent.PackStart (menubarWidget, true, true, 0);
 			vBoxContent.PackStart (chooseConfigWidget, false, false, 0);
 			vBoxContent.PackStart (repoTreeViewWidget, true, true, 0);
 			vBoxContent.PackStart (syncActionWidget, false, false, 0);
 			vBoxContent.PackStart (syncOutputWidget, true, true, 0);
-			// TODO: Add more content here
 		}
 
 

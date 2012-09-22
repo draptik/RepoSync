@@ -60,6 +60,8 @@
     <Compile Include="gtk-gui\RepoSync.GuiGtk.RepoTreeViewWidget.cs" />
     <Compile Include="gtk-gui\RepoSync.GuiGtk.SyncActionWidget.cs" />
     <Compile Include="gtk-gui\RepoSync.GuiGtk.SyncOutputWidget.cs" />
+    <Compile Include="Widgets\MenuBarWidget.cs" />
+    <Compile Include="gtk-gui\RepoSync.GuiGtk.MenuBarWidget.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
