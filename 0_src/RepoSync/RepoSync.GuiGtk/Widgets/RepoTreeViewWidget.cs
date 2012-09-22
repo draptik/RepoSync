@@ -78,6 +78,8 @@ namespace RepoSync.GuiGtk
 
 		public void Update (SyncConfig syncConfig)
 		{
+			listStore.Clear ();
+
 			if (syncConfig == null) {
 				return;
 			}

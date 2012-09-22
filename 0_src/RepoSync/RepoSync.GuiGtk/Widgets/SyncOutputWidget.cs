@@ -17,9 +17,14 @@ namespace RepoSync.GuiGtk
 			this.ShowAll ();
 		}
 
+		public void ClearContent ()
+		{
+			textView.Buffer.Text = string.Empty;
+		}
+
 		public void Content (string content)
 		{
-			textView.Buffer.Text = content;
+			textView.Buffer.Text += content;
 		}
 
 		private void Init ()

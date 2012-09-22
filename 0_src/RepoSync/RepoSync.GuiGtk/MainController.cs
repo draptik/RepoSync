@@ -32,6 +32,8 @@ namespace RepoSync.GuiGtk
 		{
 			if (this.syncConfig != null) {
 
+				syncOutputWidget.ClearContent ();
+
 				var gitService = new GitService ();
 				foreach (var entry in syncConfig.Entries) {
 
@@ -45,7 +47,8 @@ namespace RepoSync.GuiGtk
 						break;
 					}
 
-					syncOutputWidget.Content(response.Msg);
+					var title = MakeTitle(entry);
+					syncOutputWidget.Content(title + response.Msg + EntryFooter);
 				}
 			}
 		}
@@ -54,6 +57,26 @@ namespace RepoSync.GuiGtk
 		{
 			this.syncConfig = syncConfig;
 			repoTreeViewWidget.Update (syncConfig);
+		}
+
+
+		private const int LENGTH_LINE = 80;
+
+		private string MakeTitle(Entry entry)
+		{
+			var dashLine = "* " + new String('=', LENGTH_LINE);
+			return Environment.NewLine + dashLine + Environment.NewLine + 
+				"* Repo: " + entry.Name + Environment.NewLine +
+				dashLine + Environment.NewLine;
+		}
+
+		private string EntryFooter 
+		{ 
+			get 
+			{ 
+				var singleDasLine = "* "  + new String('-', LENGTH_LINE);
+				return Environment.NewLine + singleDasLine + Environment.NewLine; 
+			}
 		}
 	}
 }
