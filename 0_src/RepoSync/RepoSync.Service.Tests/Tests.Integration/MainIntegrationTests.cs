@@ -97,8 +97,8 @@ namespace RepoSync.Service.Tests
 			Assert.IsTrue (result.Success);
 
 			var configEntry = MakeConfigEntry();
-			configEntry.Source = configEntry.Source + "_invalid";
-			configEntry.Destination = configEntry.Destination;
+			configEntry.Local = configEntry.Local + "_invalid";
+			configEntry.Remote = configEntry.Remote;
 
 			var gitService = new GitService ();
 			var ex = Assert.Throws<JGitInternalException>(() => gitService.Push (configEntry));

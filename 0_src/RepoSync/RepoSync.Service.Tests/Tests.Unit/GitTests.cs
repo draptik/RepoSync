@@ -20,9 +20,9 @@ namespace RepoSync.Service.Tests
 		{
 			SetupGitRepos (InitialGitStatus.BareAheadOfHome);
 			var configEntry = MakeConfigEntry ();
-			configEntry.Source = configEntry.Source + "_invalid";
+			configEntry.Local = configEntry.Local + "_invalid";
 			var gitService = new GitService ();
-			Assert.IsFalse(gitService.IsGitDir(configEntry.Source));
+			Assert.IsFalse(gitService.IsGitDir(configEntry.Local));
 		}
 
 		[Test]
@@ -31,7 +31,7 @@ namespace RepoSync.Service.Tests
 			SetupGitRepos (InitialGitStatus.BareAheadOfHome);
 			var configEntry = MakeConfigEntry ();
 			var gitService = new GitService ();
-			Assert.IsTrue(gitService.IsGitDir(configEntry.Source));
+			Assert.IsTrue(gitService.IsGitDir(configEntry.Local));
 		}
 
 		[Test]
@@ -81,7 +81,7 @@ namespace RepoSync.Service.Tests
 		/// http://o2platform.wordpress.com/category/github/
 		public string GitOutput(Entry entry)
 		{
-			var git = new Git(new FileRepository(ToGitDirString(entry.Source)));
+			var git = new Git(new FileRepository(ToGitDirString(entry.Local)));
 			//var git = Git.Open(testRepository);
 //			var repository = git.GetRepository();
 			var stringWriter = new StringWriter();

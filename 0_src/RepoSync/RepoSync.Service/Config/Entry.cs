@@ -9,12 +9,12 @@ namespace RepoSync.Service.Config
 			set;
 		}
 
-		public virtual String Source {
+		public virtual String Local {
 			get;
 			set;
 		}
 
-		public virtual String Destination {
+		public virtual String Remote {
 			get;
 			set;
 		}

@@ -23,12 +23,12 @@ namespace RepoSync.Service
 
 		public ICommandResponse Pull (Entry entry)
 		{
-			return gitStrategy.Pull(entry.Source, entry.Destination);
+			return gitStrategy.Pull(entry.Local, entry.Remote);
 		}
 
 		public ICommandResponse Push (Entry entry)
 		{
-			return gitStrategy.Push(entry.Source);
+			return gitStrategy.Push(entry.Local);
 		}
 	}
 }

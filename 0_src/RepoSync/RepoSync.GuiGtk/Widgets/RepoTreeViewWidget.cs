@@ -45,8 +45,8 @@ namespace RepoSync.GuiGtk
 			// TODO: action column should be an image or a button
 
 			var nameColumn = new TreeViewColumn { Title = "Name" };
-			var srcColumn = new TreeViewColumn { Title = "Source" };
-			var destColumn = new TreeViewColumn { Title = "Destination" };
+			var srcColumn = new TreeViewColumn { Title = "Local" };
+			var destColumn = new TreeViewColumn { Title = "Remote" };
 			var actionColumn = new TreeViewColumn { Title = "Action" };
 
 			tv.AppendColumn (nameColumn);
@@ -83,7 +83,7 @@ namespace RepoSync.GuiGtk
 			}
 
 			foreach (var entry in syncConfig.Entries) {
-				listStore.AppendValues (entry.Name, entry.Source, entry.Destination, entry.DefaultGitAction.ToString());
+				listStore.AppendValues (entry.Name, entry.Local, entry.Remote, entry.DefaultGitAction.ToString());
 			}
 		}
 
