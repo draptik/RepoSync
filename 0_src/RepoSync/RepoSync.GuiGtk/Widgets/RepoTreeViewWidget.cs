@@ -44,34 +44,10 @@ namespace RepoSync.GuiGtk
 			// TODO: action column must fire event
 			// TODO: action column should be an image or a button
 
-			var nameColumn = new TreeViewColumn { Title = "Name" };
-			var srcColumn = new TreeViewColumn { Title = "Local" };
-			var destColumn = new TreeViewColumn { Title = "Remote" };
-			var actionColumn = new TreeViewColumn { Title = "Action" };
-
-			tv.AppendColumn (nameColumn);
-			tv.AppendColumn (srcColumn);
-			tv.AppendColumn (destColumn);
-			tv.AppendColumn (actionColumn);
-
-			// CellRenderers...
-			var nameCell = new CellRendererText ();
-			nameColumn.PackStart (nameCell, true);
-
-			var srcCell = new CellRendererText ();
-			srcColumn.PackStart (srcCell, true);
-
-			var destCell = new CellRendererText ();
-			destColumn.PackStart (destCell, true);
-
-			var actionCell = new CellRendererText ();
-			actionColumn.PackStart (actionCell, true);
-
-			// Tell the Cell Renderers which items in the model to display (mapping to listStore)
-			nameColumn.AddAttribute (nameCell, "text", 0);
-			srcColumn.AddAttribute (srcCell, "text", 1);
-			destColumn.AddAttribute (destCell, "text", 2);
-			actionColumn.AddAttribute (actionCell, "text", 3);
+			tv.AppendColumn ("Name", new CellRendererText(), "text", 0);
+			tv.AppendColumn ("Local", new CellRendererText(), "text", 1);
+			tv.AppendColumn ("Remote", new CellRendererText(), "text", 2);
+			tv.AppendColumn ("Action", new CellRendererText(), "text", 3);
 		}
 
 
