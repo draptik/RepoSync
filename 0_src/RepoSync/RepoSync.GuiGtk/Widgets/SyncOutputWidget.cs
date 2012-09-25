@@ -8,6 +8,9 @@ namespace RepoSync.GuiGtk
 	{
 		private Gtk.TextView textView;
 
+		private Gtk.TreeView treeView;
+		private Gtk.TreeStore model;
+
 		public SyncOutputWidget ()
 		{
 			this.Build ();
@@ -19,26 +22,65 @@ namespace RepoSync.GuiGtk
 
 		public void ClearContent ()
 		{
-			textView.Buffer.Text = string.Empty;
+//			textView.Buffer.Text = string.Empty;
+			model.Clear ();
 		}
 
-		public void Content (string content)
+//		public void Content (string content)
+//		{
+//			textView.Buffer.Text += content;
+//		}
+
+		public void Content (bool success, string title, string content)
 		{
-			textView.Buffer.Text += content;
+			Gtk.TreeIter iter;
+
+			iter = model.AppendValues (GetSuccessIcon (success), title);
+			model.AppendValues (iter, content);
+
+//			treeView.Model += model;
+			treeView.Model = model;
+		}
+
+		private Gdk.Pixbuf GetSuccessIcon (bool success)
+		{
+			var iconSuccess = ConvertStockItemToPixBuf (Stock.Apply);
+			var iconFailure = ConvertStockItemToPixBuf (Stock.No);
+
+			return success ? iconSuccess : iconFailure;
+		}
+
+		private Gdk.Pixbuf ConvertStockItemToPixBuf (string stockItem, IconSize size = IconSize.Menu)
+		{
+			return this.RenderIcon (stockItem, size, null);
 		}
 
 		private void Init ()
 		{
-			textView = new Gtk.TextView();
+//			textView = new Gtk.TextView();
+//
+//			// we need some more height...
+//			textView.HeightRequest = 400;
+//
+//			var scrolledWindow = new Gtk.ScrolledWindow(null, null);
+//			scrolledWindow.Add (textView);
+//
+//			var vbox = new VBox();
+//			vbox.PackStart(scrolledWindow, true, true, 0);
+//			this.Add (vbox);
 
-			// we need some more height...
-			textView.HeightRequest = 400;
+			// Model:
+			model = new Gtk.TreeStore (typeof (Gdk.Pixbuf), typeof (string));
 
-			var scrolledWindow = new Gtk.ScrolledWindow(null, null);
-			scrolledWindow.Add (textView);
+			// View:
+			treeView = new Gtk.TreeView ();
+			treeView.HeightRequest = 400;
+			treeView.AppendColumn ("", new Gtk.CellRendererPixbuf (), "pixbuf", 0);  
+			treeView.AppendColumn ("Result", new Gtk.CellRendererText (), "text", 1);
 
-			var vbox = new VBox();
-			vbox.PackStart(scrolledWindow, true, true, 0);
+			treeView.Model = model;
+			var vbox = new VBox ();
+			vbox.PackStart(treeView, true, true, 0);
 			this.Add (vbox);
 		}
 

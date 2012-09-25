@@ -48,7 +48,8 @@ namespace RepoSync.GuiGtk
 					}
 
 					var title = MakeTitle(entry);
-					syncOutputWidget.Content(title + response.Msg + EntryFooter);
+//					syncOutputWidget.Content(title + response.Msg + EntryFooter);
+					syncOutputWidget.Content(response.Success, entry.Name, response.Msg + EntryFooter);
 				}
 			}
 		}
