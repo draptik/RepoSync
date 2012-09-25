@@ -31,6 +31,9 @@ namespace RepoSync.GuiGtk
 		{
 			textView = new Gtk.TextView();
 
+			// we need some more height...
+			textView.HeightRequest = 400;
+
 			var scrolledWindow = new Gtk.ScrolledWindow(null, null);
 			scrolledWindow.Add (textView);
 
