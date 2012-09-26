@@ -1,0 +1,18 @@
+{
+	"name": "config_test.json",
+	"entries": 
+	[
+		{
+			"name": "project1",
+			"remote": "/home/patrick/tmp/Z_deleteme_git_repos/project1.git",
+			"local": "/home/patrick/tmp/Z_deleteme_git_repos/project1",
+			"defaultGitAction": "pull"
+		},
+		{
+			"name": "project2",
+			"remote": "/home/patrick/tmp/Z_deleteme_git_repos/project1.git",
+			"local": "/home/patrick/tmp/Z_deleteme_git_repos/project1",
+			"defaultGitAction": "pull"
+		}	
+	]
+}

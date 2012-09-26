@@ -87,5 +87,6 @@
     <None Include="testdata\config_test.json" />
     <None Include="testdata\testfile.txt" />
     <None Include="testdata\config_test_pull.json" />
+    <None Include="testdata\config_test_pull_multiple_repos.json" />
   </ItemGroup>
 </Project>
