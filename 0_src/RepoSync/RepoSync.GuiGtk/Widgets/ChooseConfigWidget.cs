@@ -31,8 +31,15 @@ namespace RepoSync.GuiGtk
 
 			btnFileChooser.SelectionChanged += HandleSelectionChanged;
 
+			var label = new Gtk.Label ();
+			label.Text = "Please choose config file:";
+
+			var hbox = new HBox();
+			hbox.PackStart(label, false, false, 10);
+			hbox.PackStart(btnFileChooser, true, true, 10);
+
 			var vbox = new VBox();
-			vbox.PackStart(btnFileChooser, true, true, 0);
+			vbox.PackStart(hbox, true, true, 2);
 			this.Add (vbox);
 		}
 
