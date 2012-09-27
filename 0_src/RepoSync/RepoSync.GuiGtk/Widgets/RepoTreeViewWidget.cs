@@ -8,7 +8,7 @@ namespace RepoSync.GuiGtk
 	public partial class RepoTreeViewWidget : Gtk.Bin
 	{
 		private TreeView tv;
-		private ListStore listStore;
+		private ListStore model;
 
 
 		public RepoTreeViewWidget ()
@@ -23,12 +23,13 @@ namespace RepoSync.GuiGtk
 		private void Init ()
 		{
 			tv = new Gtk.TreeView();
+			tv.HeightRequest = 100;
 
 			InitColumns ();
 
-			listStore = new ListStore (typeof(string), typeof(string), typeof(string), typeof(string));
+			model = new ListStore (typeof(string), typeof(string), typeof(string), typeof(string));
 
-			tv.Model = listStore;
+			tv.Model = model;
 
 
 			var vbox = new VBox();
@@ -54,14 +55,14 @@ namespace RepoSync.GuiGtk
 
 		public void Update (SyncConfig syncConfig)
 		{
-			listStore.Clear ();
+			model.Clear ();
 
 			if (syncConfig == null) {
 				return;
 			}
 
 			foreach (var entry in syncConfig.Entries) {
-				listStore.AppendValues (entry.Name, entry.Local, entry.Remote, entry.DefaultGitAction.ToString());
+				model.AppendValues (entry.Name, entry.Local, entry.Remote, entry.DefaultGitAction.ToString());
 			}
 		}
 
