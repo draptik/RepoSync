@@ -7,9 +7,13 @@ namespace RepoSync.GuiGtk
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class RepoTreeViewWidget : Gtk.Bin
 	{
+		private const int COLINDEX_TOGGLE = 0;
+		private const int COLINDEX_NAME = 1;
+		private const int COLINDEX_LOCAL = 2;
+		private const int COLINDEX_REMOTE = 3;
+		private const int COLINDEX_ACTION = 4;
 		private TreeView tv;
 		private ListStore model;
-
 
 		public RepoTreeViewWidget ()
 		{
@@ -22,36 +26,53 @@ namespace RepoSync.GuiGtk
 
 		private void Init ()
 		{
-			tv = new Gtk.TreeView();
+			tv = new Gtk.TreeView ();
 			tv.HeightRequest = 100;
 
 			InitColumns ();
 
-			model = new ListStore (typeof(string), typeof(string), typeof(string), typeof(string));
+			model = new ListStore (typeof(bool), typeof(string), typeof(string), typeof(string), typeof(string));
 
 			tv.Model = model;
 
 
-			var vbox = new VBox();
-			vbox.PackStart(tv, true, true, 0);
+			var vbox = new VBox ();
+			vbox.PackStart (tv, true, true, 0);
 
 			this.Add (vbox);
 		}
 
 		private void InitColumns ()
 		{
-			// TODO: action column must be minimal space right aligned.
-			// TODO: action column must be clickable
-			// TODO: action column must fire event
-			// TODO: action column should be an image or a button
+			var toggle = new CellRendererToggle ();
+			toggle.Toggled += HandleRepoToggled;
 
-			tv.AppendColumn ("Name", new CellRendererText(), "text", 0);
-			tv.AppendColumn ("Local", new CellRendererText(), "text", 1);
-			tv.AppendColumn ("Remote", new CellRendererText(), "text", 2);
-			tv.AppendColumn ("Action", new CellRendererText(), "text", 3);
+			tv.AppendColumn ("", toggle, "active", COLINDEX_TOGGLE);
+			tv.AppendColumn ("Name", new CellRendererText (), "text", COLINDEX_NAME);
+			tv.AppendColumn ("Local", new CellRendererText (), "text", COLINDEX_LOCAL);
+			tv.AppendColumn ("Remote", new CellRendererText (), "text", COLINDEX_REMOTE);
+			tv.AppendColumn ("Action", new CellRendererText (), "text", COLINDEX_ACTION);
 		}
 
+		private void HandleRepoToggled (object o, ToggledArgs args)
+		{
+			var currentCellRendererToggle = o as CellRendererToggle;
 
+			if (currentCellRendererToggle == null) {
+				return;
+			}
+
+			var viewPathIndex = new TreePath (args.Path);
+
+			// check if model has the view index
+			TreeIter iterModelIndex;
+			if (!model.GetIter (out iterModelIndex, viewPathIndex)) {
+				return; 
+			}
+
+			// update toggle state
+			model.SetValue (iterModelIndex, COLINDEX_TOGGLE, !currentCellRendererToggle.Active); 
+		}
 
 		public void Update (SyncConfig syncConfig)
 		{
@@ -62,7 +83,12 @@ namespace RepoSync.GuiGtk
 			}
 
 			foreach (var entry in syncConfig.Entries) {
-				model.AppendValues (entry.Name, entry.Local, entry.Remote, entry.DefaultGitAction.ToString());
+				var defaultActivationState = true;
+				model.AppendValues (defaultActivationState, 
+				                    entry.Name, 
+				                    entry.Local, 
+				                    entry.Remote, 
+				                    entry.DefaultGitAction.ToString ());
 			}
 		}
 
