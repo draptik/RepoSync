@@ -28,6 +28,11 @@ namespace RepoSync.GuiGtk
 			syncActionWidget.DefaultGitActionForAllStarted += HandleBtnDefaultGitActionForAllStarted;
 		}
 
+		private bool IsSyncConfigPresent 
+		{ 
+			get { return syncConfig != null && syncConfig.Entries.Count > 0; } 
+		}
+
 		private void HandleBtnDefaultGitActionForAllStarted ()
 		{
 			if (this.syncConfig != null) {
@@ -48,8 +53,7 @@ namespace RepoSync.GuiGtk
 					}
 
 					var title = MakeTitle(entry);
-//					syncOutputWidget.Content(title + response.Msg + EntryFooter);
-					syncOutputWidget.Content(response.Success, entry.Name, response.Msg + EntryFooter);
+					syncOutputWidget.Content(response.Success, entry.Name, title + response.Msg + EntryFooter);
 				}
 			}
 		}
@@ -58,7 +62,10 @@ namespace RepoSync.GuiGtk
 		{
 			this.syncConfig = syncConfig;
 			repoTreeViewWidget.Update (syncConfig);
+
+			syncActionWidget.IsActive = IsSyncConfigPresent;
 		}
+
 
 
 		private const int LENGTH_LINE = 80;
@@ -79,6 +86,8 @@ namespace RepoSync.GuiGtk
 				return Environment.NewLine + singleDasLine + Environment.NewLine; 
 			}
 		}
+
+
 	}
 }
 
