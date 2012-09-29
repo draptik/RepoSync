@@ -3,6 +3,7 @@ using RepoSync.Service.Config;
 using Gtk;
 using Entry = RepoSync.Service.Config.Entry;
 using System.Collections.Generic;
+using RepoSync.Service;
 
 namespace RepoSync.GuiGtk
 {
@@ -13,6 +14,7 @@ namespace RepoSync.GuiGtk
 		private const int COLINDEX_ENTRY = 1;
 		private TreeView tv;
 		private ListStore model;
+		private ListStore modelGitActions;
 
 		public event System.Action<bool> SingleSelectionChangeStarted;
 
@@ -77,6 +79,10 @@ namespace RepoSync.GuiGtk
 			tv = new Gtk.TreeView ();
 			tv.HeightRequest = 100;
 
+			modelGitActions = new ListStore (typeof(string));
+			modelGitActions.AppendValues (DefaultGitAction.Pull.ToString ());
+			modelGitActions.AppendValues (DefaultGitAction.Push.ToString ());
+
 			InitColumns ();
 
 			model = new ListStore (typeof(bool), typeof(Entry));
@@ -111,8 +117,9 @@ namespace RepoSync.GuiGtk
 			remoteColumn.SetCellDataFunc (remoteCell, new TreeCellDataFunc (RenderEntryRemote));
 
 			var actionColumn = new TreeViewColumn { Title = "Action" };
-			var actionCell = new CellRendererText ();
+			var actionCell = new CellRendererCombo ();
 			actionColumn.PackStart (actionCell, true);
+			actionColumn.AddAttribute (actionCell, "text", COLINDEX_ENTRY);
 			actionColumn.SetCellDataFunc (actionCell, new TreeCellDataFunc (RenderEntryAction));
 
 			tv.AppendColumn (nameColumn);
@@ -142,9 +149,12 @@ namespace RepoSync.GuiGtk
 		private void RenderEntryAction (TreeViewColumn column, CellRenderer cell, TreeModel treemodel, TreeIter iter)
 		{
 			Entry entry = (Entry) treemodel.GetValue (iter, COLINDEX_ENTRY);
-			(cell as CellRendererText).Text = entry.DefaultGitAction.ToString ();
+			var cellRendererCombo = cell as CellRendererCombo;
+			cellRendererCombo.Model = modelGitActions;
+			cellRendererCombo.Editable = true;
+			cellRendererCombo.TextColumn = 0;
+			cellRendererCombo.Text = entry.DefaultGitAction.ToString ();
 		}
-
 
 
 		private void HandleRepoToggled (object o, ToggledArgs args)
