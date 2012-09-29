@@ -25,12 +25,21 @@ namespace RepoSync.GuiGtk
 
 			// Register events
 			chooseConfigWidget.OnSyncConfigChangedStarted += HandleOnSyncConfigChangedStarted;
+			repoTreeViewWidget.SingleSelectionChangeStarted += HandleSingleSelectionChangeStarted;
 			syncActionWidget.DefaultGitActionForAllStarted += HandleBtnDefaultGitActionForAllStarted;
+			syncActionWidget.ToggleAllReposStarted += HandleBtnToggleAllReposStarted;
 		}
 
 		private bool IsSyncConfigPresent 
 		{ 
 			get { return syncConfig != null && syncConfig.Entries.Count > 0; } 
+		}
+
+		#region Event Handlers
+
+		private void HandleBtnToggleAllReposStarted ()
+		{
+			repoTreeViewWidget.ToggleAll (syncActionWidget.IsSelectAllChecked);
 		}
 
 		private void HandleBtnDefaultGitActionForAllStarted ()
@@ -64,8 +73,15 @@ namespace RepoSync.GuiGtk
 			repoTreeViewWidget.Update (syncConfig);
 
 			syncActionWidget.IsActive = IsSyncConfigPresent;
+			syncActionWidget.IsSelectAllChecked = IsSyncConfigPresent;
 		}
 
+		private void HandleSingleSelectionChangeStarted (bool areAllEntriesSelected)
+		{
+			syncActionWidget.IsSelectAllChecked = areAllEntriesSelected;
+		}
+
+		#endregion
 
 
 		private const int LENGTH_LINE = 80;
@@ -86,8 +102,6 @@ namespace RepoSync.GuiGtk
 				return Environment.NewLine + singleDasLine + Environment.NewLine; 
 			}
 		}
-
-
 	}
 }
 

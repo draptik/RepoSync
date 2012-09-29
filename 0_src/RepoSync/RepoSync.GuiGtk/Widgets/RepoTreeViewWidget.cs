@@ -15,6 +15,16 @@ namespace RepoSync.GuiGtk
 		private TreeView tv;
 		private ListStore model;
 
+		public event System.Action<bool> SingleSelectionChangeStarted;
+
+		private void OnSingleSelectionChangeStarted (bool areAllEntriesSelected)
+		{
+			var handler = this.SingleSelectionChangeStarted;
+			if (handler != null) {
+				handler(areAllEntriesSelected);
+			}
+		}
+
 		public RepoTreeViewWidget ()
 		{
 			this.Build ();
@@ -22,6 +32,34 @@ namespace RepoSync.GuiGtk
 			Init ();
 
 			this.ShowAll ();
+		}
+
+		public void Update (SyncConfig syncConfig)
+		{
+			model.Clear ();
+
+			if (syncConfig == null) {
+				return;
+			}
+
+			foreach (var entry in syncConfig.Entries) {
+				var defaultActivationState = true;
+				model.AppendValues (defaultActivationState, 
+				                    entry.Name, 
+				                    entry.Local, 
+				                    entry.Remote, 
+				                    entry.DefaultGitAction.ToString ());
+			}
+		}
+
+		public void ToggleAll (bool isSelectAllChecked)
+		{
+			TreeIter iter;
+			if (model.GetIterFirst (out iter)) {
+				do {
+					model.SetValue (iter, COLINDEX_TOGGLE, isSelectAllChecked);
+				} while (model.IterNext (ref iter));
+			}
 		}
 
 		private void Init ()
@@ -71,27 +109,25 @@ namespace RepoSync.GuiGtk
 			}
 
 			// update toggle state
-			model.SetValue (iterModelIndex, COLINDEX_TOGGLE, !currentCellRendererToggle.Active); 
+			model.SetValue (iterModelIndex, COLINDEX_TOGGLE, !currentCellRendererToggle.Active);
+
+			OnSingleSelectionChangeStarted (AreAllEntriesSelected);
 		}
 
-		public void Update (SyncConfig syncConfig)
+		private bool AreAllEntriesSelected 
 		{
-			model.Clear ();
-
-			if (syncConfig == null) {
-				return;
-			}
-
-			foreach (var entry in syncConfig.Entries) {
-				var defaultActivationState = true;
-				model.AppendValues (defaultActivationState, 
-				                    entry.Name, 
-				                    entry.Local, 
-				                    entry.Remote, 
-				                    entry.DefaultGitAction.ToString ());
+			get 
+			{ 
+				bool areAllSelected = true;
+				TreeIter iter;
+				if (model.GetIterFirst (out iter)) {
+					do {
+						areAllSelected = (bool) model.GetValue (iter, COLINDEX_TOGGLE);
+					} while (areAllSelected && model.IterNext (ref iter));
+				}
+				return areAllSelected;
 			}
 		}
-
 	}
 }
 
