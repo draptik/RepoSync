@@ -2,6 +2,7 @@ using System;
 using RepoSync.Service.Config;
 using Gtk;
 using Entry = RepoSync.Service.Config.Entry;
+using System.Collections.Generic;
 
 namespace RepoSync.GuiGtk
 {
@@ -54,6 +55,21 @@ namespace RepoSync.GuiGtk
 					model.SetValue (iter, COLINDEX_TOGGLE, isSelectAllChecked);
 				} while (model.IterNext (ref iter));
 			}
+		}
+
+		public List<Entry> GetCheckedEntries ()
+		{
+			List<Entry> result = new List<Entry>();
+			TreeIter iter;
+			if (model.GetIterFirst (out iter)) {
+				do {
+					bool isSelected = (bool) model.GetValue (iter, COLINDEX_TOGGLE);
+					if (isSelected) {
+						result.Add ((Entry) model.GetValue (iter, COLINDEX_ENTRY));
+					}
+				} while (model.IterNext (ref iter));
+			}
+			return result;
 		}
 
 		private void Init ()

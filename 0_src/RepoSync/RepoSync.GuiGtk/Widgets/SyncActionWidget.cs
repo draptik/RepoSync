@@ -24,14 +24,7 @@ namespace RepoSync.GuiGtk
 			this.ShowAll ();
 		}
 		
-		public bool IsActive 
-		{
-			set
-			{ 
-				btnDoDefaultGitActionForAll.Sensitive = value; 
-				btnToggleSelection.Sensitive = value;
-			}
-		}
+		public bool IsActive { set { btnDoDefaultGitActionForAll.Sensitive = value; } }
 
 		public bool IsSelectAllChecked 
 		{

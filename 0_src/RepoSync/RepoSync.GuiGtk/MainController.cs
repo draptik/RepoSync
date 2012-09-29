@@ -1,6 +1,7 @@
 using System;
 using RepoSync.Service.Config;
 using RepoSync.Service;
+using System.Collections.Generic;
 
 namespace RepoSync.GuiGtk
 {
@@ -30,8 +31,7 @@ namespace RepoSync.GuiGtk
 			syncActionWidget.ToggleAllReposStarted += HandleBtnToggleAllReposStarted;
 		}
 
-		private bool IsSyncConfigPresent 
-		{ 
+		private bool IsSyncConfigPresent { 
 			get { return syncConfig != null && syncConfig.Entries.Count > 0; } 
 		}
 
@@ -40,6 +40,7 @@ namespace RepoSync.GuiGtk
 		private void HandleBtnToggleAllReposStarted ()
 		{
 			repoTreeViewWidget.ToggleAll (syncActionWidget.IsSelectAllChecked);
+			syncActionWidget.IsActive = AreAnyReposSelected();
 		}
 
 		private void HandleBtnDefaultGitActionForAllStarted ()
@@ -48,21 +49,26 @@ namespace RepoSync.GuiGtk
 
 				syncOutputWidget.ClearContent ();
 
-				var gitService = new GitService ();
-				foreach (var entry in syncConfig.Entries) {
+				var entries = repoTreeViewWidget.GetCheckedEntries ();
 
-					ICommandResponse response = null;
-					switch (entry.DefaultGitAction) {
-					case DefaultGitAction.Pull:
-						response = gitService.Pull (entry);
-						break;
-					case DefaultGitAction.Push:
-						response = gitService.Push (entry);
-						break;
+				if (entries.Count > 0) {
+					var gitService = new GitService ();
+
+					foreach (var entry in entries) {
+						ICommandResponse response = null;
+						switch (entry.DefaultGitAction) {
+						case DefaultGitAction.Pull:
+							response = gitService.Pull (entry);
+							break;
+						case DefaultGitAction.Push:
+							response = gitService.Push (entry);
+							break;
+						}
+
+						syncOutputWidget.Content (response.Success, 
+					                         entry.Name, 
+					                         MakeTitle (entry) + response.Msg + EntryFooter);
 					}
-
-					var title = MakeTitle(entry);
-					syncOutputWidget.Content(response.Success, entry.Name, title + response.Msg + EntryFooter);
 				}
 			}
 		}
@@ -72,33 +78,38 @@ namespace RepoSync.GuiGtk
 			this.syncConfig = syncConfig;
 			repoTreeViewWidget.Update (syncConfig);
 
-			syncActionWidget.IsActive = IsSyncConfigPresent;
 			syncActionWidget.IsSelectAllChecked = IsSyncConfigPresent;
+			syncActionWidget.IsActive = AreAnyReposSelected();
 		}
 
 		private void HandleSingleSelectionChangeStarted (bool areAllEntriesSelected)
 		{
 			syncActionWidget.IsSelectAllChecked = areAllEntriesSelected;
+			syncActionWidget.IsActive = AreAnyReposSelected();
+
 		}
 
 		#endregion
 
+		private bool AreAnyReposSelected ()
+		{
+			var entries = repoTreeViewWidget.GetCheckedEntries ();
+			return entries != null && entries.Count > 0;
+		}
 
 		private const int LENGTH_LINE = 80;
 
-		private string MakeTitle(Entry entry)
+		private string MakeTitle (Entry entry)
 		{
-			var dashLine = "* " + new String('=', LENGTH_LINE);
+			var dashLine = "* " + new String ('=', LENGTH_LINE);
 			return Environment.NewLine + dashLine + Environment.NewLine + 
 				"* Repo: " + entry.Name + Environment.NewLine +
 				dashLine + Environment.NewLine;
 		}
 
-		private string EntryFooter 
-		{ 
-			get 
-			{ 
-				var singleDasLine = "* "  + new String('-', LENGTH_LINE);
+		private string EntryFooter { 
+			get { 
+				var singleDasLine = "* " + new String ('-', LENGTH_LINE);
 				return Environment.NewLine + singleDasLine + Environment.NewLine; 
 			}
 		}
