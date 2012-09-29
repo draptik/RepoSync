@@ -8,6 +8,7 @@ namespace RepoSync.GuiGtk
 	{
 		private Button btnDoDefaultGitActionForAll;
 		private CheckButton btnToggleSelection;
+		private bool ignoreSetActive = false;
 
 		public event System.Action DefaultGitActionForAllStarted;
 		public event System.Action ToggleAllReposStarted;
@@ -35,7 +36,11 @@ namespace RepoSync.GuiGtk
 		public bool IsSelectAllChecked 
 		{
 			get { return btnToggleSelection.Active; }
-			set { btnToggleSelection.Active = value; }
+			set 
+			{
+				ignoreSetActive = true; // workaround, because setting Active fires event
+				btnToggleSelection.Active = value; // This fires the click/toggle event! Not good!
+			} 
 		}
 
 		private void Init ()
@@ -50,8 +55,7 @@ namespace RepoSync.GuiGtk
 			// Toggle button
 			btnToggleSelection = new Gtk.CheckButton();
 			btnToggleSelection.Label = "Select all";
-			btnToggleSelection.Clicked += OnToggleClickStarted;
-
+			btnToggleSelection.Toggled += OnToggleClickStarted;
 
 			hbox.PackStart(btnToggleSelection, false, false, 20);
 			hbox.PackStart(btnDoDefaultGitActionForAll, true, true, 0);
@@ -69,9 +73,14 @@ namespace RepoSync.GuiGtk
 
 		private void OnToggleClickStarted (object sender, EventArgs e)
 		{
-			var handler = this.ToggleAllReposStarted;
-			if (handler != null) {
-				handler();
+			if (!ignoreSetActive) {
+				var handler = this.ToggleAllReposStarted;
+				if (handler != null) {
+					handler ();
+				}
+			}
+			else {
+				ignoreSetActive = false;
 			}
 		}
 	}
