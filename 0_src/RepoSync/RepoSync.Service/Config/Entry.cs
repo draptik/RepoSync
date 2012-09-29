@@ -4,6 +4,13 @@ namespace RepoSync.Service.Config
 {
 	public class Entry
 	{
+		public Entry ()
+		{
+			Id = System.Guid.NewGuid();
+		}
+
+		public virtual Guid Id { get; private set; }
+
 		public virtual String Name {
 			get;
 			set;

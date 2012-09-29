@@ -1,6 +1,7 @@
 using System;
 using RepoSync.Service.Config;
 using Gtk;
+using Entry = RepoSync.Service.Config.Entry;
 
 namespace RepoSync.GuiGtk
 {
@@ -8,10 +9,7 @@ namespace RepoSync.GuiGtk
 	public partial class RepoTreeViewWidget : Gtk.Bin
 	{
 		private const int COLINDEX_TOGGLE = 0;
-		private const int COLINDEX_NAME = 1;
-		private const int COLINDEX_LOCAL = 2;
-		private const int COLINDEX_REMOTE = 3;
-		private const int COLINDEX_ACTION = 4;
+		private const int COLINDEX_ENTRY = 1;
 		private TreeView tv;
 		private ListStore model;
 
@@ -44,11 +42,7 @@ namespace RepoSync.GuiGtk
 
 			foreach (var entry in syncConfig.Entries) {
 				var defaultActivationState = true;
-				model.AppendValues (defaultActivationState, 
-				                    entry.Name, 
-				                    entry.Local, 
-				                    entry.Remote, 
-				                    entry.DefaultGitAction.ToString ());
+				model.AppendValues (defaultActivationState, entry);
 			}
 		}
 
@@ -69,10 +63,8 @@ namespace RepoSync.GuiGtk
 
 			InitColumns ();
 
-			model = new ListStore (typeof(bool), typeof(string), typeof(string), typeof(string), typeof(string));
-
+			model = new ListStore (typeof(bool), typeof(Entry));
 			tv.Model = model;
-
 
 			var vbox = new VBox ();
 			vbox.PackStart (tv, true, true, 0);
@@ -86,11 +78,58 @@ namespace RepoSync.GuiGtk
 			toggle.Toggled += HandleRepoToggled;
 
 			tv.AppendColumn ("", toggle, "active", COLINDEX_TOGGLE);
-			tv.AppendColumn ("Name", new CellRendererText (), "text", COLINDEX_NAME);
-			tv.AppendColumn ("Local", new CellRendererText (), "text", COLINDEX_LOCAL);
-			tv.AppendColumn ("Remote", new CellRendererText (), "text", COLINDEX_REMOTE);
-			tv.AppendColumn ("Action", new CellRendererText (), "text", COLINDEX_ACTION);
+
+			var nameColumn = new TreeViewColumn { Title = "Name" };
+			var nameCell = new CellRendererText ();
+			nameColumn.PackStart (nameCell, true);
+			nameColumn.SetCellDataFunc (nameCell, new TreeCellDataFunc (RenderEntryName));
+
+			var localColumn = new TreeViewColumn { Title = "Local" };
+			var localCell = new CellRendererText ();
+			localColumn.PackStart (localCell, true);
+			localColumn.SetCellDataFunc (localCell, new TreeCellDataFunc (RenderEntryLocal));
+
+			var remoteColumn = new TreeViewColumn { Title = "Remote" };
+			var remoteCell = new CellRendererText ();
+			remoteColumn.PackStart (remoteCell, true);
+			remoteColumn.SetCellDataFunc (remoteCell, new TreeCellDataFunc (RenderEntryRemote));
+
+			var actionColumn = new TreeViewColumn { Title = "Action" };
+			var actionCell = new CellRendererText ();
+			actionColumn.PackStart (actionCell, true);
+			actionColumn.SetCellDataFunc (actionCell, new TreeCellDataFunc (RenderEntryAction));
+
+			tv.AppendColumn (nameColumn);
+			tv.AppendColumn (localColumn);
+			tv.AppendColumn (remoteColumn);
+			tv.AppendColumn (actionColumn);
 		}
+
+		private void RenderEntryName (TreeViewColumn column, CellRenderer cell, TreeModel treemodel, TreeIter iter)
+		{
+			Entry entry = (Entry) treemodel.GetValue (iter, COLINDEX_ENTRY);
+			(cell as CellRendererText).Text = entry.Name;
+		}
+
+		private void RenderEntryLocal (TreeViewColumn column, CellRenderer cell, TreeModel treemodel, TreeIter iter)
+		{
+			Entry entry = (Entry) treemodel.GetValue (iter, COLINDEX_ENTRY);
+			(cell as CellRendererText).Text = entry.Local;
+		}
+
+		private void RenderEntryRemote (TreeViewColumn column, CellRenderer cell, TreeModel treemodel, TreeIter iter)
+		{
+			Entry entry = (Entry) treemodel.GetValue (iter, COLINDEX_ENTRY);
+			(cell as CellRendererText).Text = entry.Remote;
+		}
+
+		private void RenderEntryAction (TreeViewColumn column, CellRenderer cell, TreeModel treemodel, TreeIter iter)
+		{
+			Entry entry = (Entry) treemodel.GetValue (iter, COLINDEX_ENTRY);
+			(cell as CellRendererText).Text = entry.DefaultGitAction.ToString ();
+		}
+
+
 
 		private void HandleRepoToggled (object o, ToggledArgs args)
 		{

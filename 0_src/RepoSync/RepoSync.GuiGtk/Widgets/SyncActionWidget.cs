@@ -74,8 +74,6 @@ namespace RepoSync.GuiGtk
 				handler();
 			}
 		}
-
-
 	}
 }
 
