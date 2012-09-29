@@ -31,10 +31,6 @@ namespace RepoSync.GuiGtk
 			syncActionWidget.ToggleAllReposStarted += HandleBtnToggleAllReposStarted;
 		}
 
-		private bool IsSyncConfigPresent { 
-			get { return syncConfig != null && syncConfig.Entries.Count > 0; } 
-		}
-
 		#region Event Handlers
 
 		private void HandleBtnToggleAllReposStarted ()
@@ -86,10 +82,14 @@ namespace RepoSync.GuiGtk
 		{
 			syncActionWidget.IsSelectAllChecked = areAllEntriesSelected;
 			syncActionWidget.IsActive = AreAnyReposSelected();
-
 		}
 
 		#endregion
+
+		private bool IsSyncConfigPresent 
+		{ 
+			get { return syncConfig != null && syncConfig.Entries.Count > 0; } 
+		}
 
 		private bool AreAnyReposSelected ()
 		{
