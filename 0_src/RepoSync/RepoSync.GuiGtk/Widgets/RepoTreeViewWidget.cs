@@ -154,8 +154,29 @@ namespace RepoSync.GuiGtk
 			cellRendererCombo.Editable = true;
 			cellRendererCombo.TextColumn = 0;
 			cellRendererCombo.Text = entry.DefaultGitAction.ToString ();
+			cellRendererCombo.Edited += ComboChanged;
 		}
 
+		private void ComboChanged (object o, EditedArgs args)
+		{
+			TreeSelection selection = tv.Selection;
+			TreeIter iter;
+			if (!selection.GetSelected (out iter)) {
+        		return;
+    		}
+
+			Entry entry = (Entry) model.GetValue (iter, COLINDEX_ENTRY);
+
+			// smells...
+			if (args.NewText == "Push") {
+				entry.DefaultGitAction = DefaultGitAction.Push;
+			}
+			else if (args.NewText == "Pull") {
+				entry.DefaultGitAction = DefaultGitAction.Pull;
+			}
+
+			model.SetValue (iter, COLINDEX_ENTRY, entry);
+		}
 
 		private void HandleRepoToggled (object o, ToggledArgs args)
 		{
