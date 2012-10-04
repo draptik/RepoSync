@@ -48,8 +48,10 @@ namespace RepoSync.GuiGtk
 
 			treeView.Model = model; // empty model
 
+			var scrolledWindow = new Gtk.ScrolledWindow(null, null);
+			scrolledWindow.Add (treeView);
 			var vbox = new VBox ();
-			vbox.PackStart(treeView, true, true, 0);
+			vbox.PackStart(scrolledWindow, true, true, 0);
 			this.Add (vbox);
 		}
 
